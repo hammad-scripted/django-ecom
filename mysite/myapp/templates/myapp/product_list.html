@@ -38,7 +38,7 @@
       <div class="p-5 flex-grow flex flex-col justify-between">
         <div>
           <h2 class="text-lg font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-1">
-            <a href="">
+            <a href="{% url 'product_detail' product.slug %}">
               <span aria-hidden="true" class="absolute inset-0"></span>
               {{ product.name }}
             </a>

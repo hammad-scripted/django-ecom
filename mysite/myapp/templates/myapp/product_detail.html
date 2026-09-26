@@ -3,7 +3,7 @@
 {% block body %}
 <!-- Breadcrumb -->
 <nav class="flex mb-6 text-sm text-slate-500 gap-2">
-  <a href="" class="hover:text-indigo-600">Products</a>
+  <a href="{% url 'product_list' %}" class="hover:text-indigo-600">Products</a>
   <span>/</span>
   <span class="text-slate-900 font-medium line-clamp-1">{{ product.name }}</span>
 </nav>
