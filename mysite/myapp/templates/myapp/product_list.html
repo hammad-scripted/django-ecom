@@ -1,0 +1,68 @@
+{% extends "myapp/base.html" %}
+
+{% block body %}
+<div class="mb-8 flex items-center justify-between">
+  <div>
+    <h1 class="text-3xl font-bold tracking-tight text-slate-900">Featured Products</h1>
+    <p class="text-sm text-slate-500 mt-1">Browse our latest collection</p>
+  </div>
+</div>
+
+<!-- Product Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  {% for product in products %}
+    {% if product.active %}
+    <div class="group relative bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-between">
+      
+      <!-- Image Container -->
+      <div class="relative w-full h-56 bg-slate-100 overflow-hidden">
+        {% if product.image %}
+          <img 
+            src="{{ product.image.url }}" 
+            alt="{{ product.name }}" 
+            class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+          >
+        {% else %}
+          <div class="w-full h-full flex items-center justify-center text-slate-400 text-sm">No Image</div>
+        {% endif %}
+
+        <!-- Stock Status Badge -->
+        {% if product.stock <= 0 %}
+          <span class="absolute top-3 right-3 bg-red-100 text-red-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-red-200">
+            Out of Stock
+          </span>
+        {% endif %}
+      </div>
+
+      <!-- Content -->
+      <div class="p-5 flex-grow flex flex-col justify-between">
+        <div>
+          <h2 class="text-lg font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-1">
+            <a href="">
+              <span aria-hidden="true" class="absolute inset-0"></span>
+              {{ product.name }}
+            </a>
+          </h2>
+          <p class="text-sm text-slate-500 mt-1 line-clamp-2">
+            {{ product.description }}
+          </p>
+        </div>
+
+        <!-- Price & Action -->
+        <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
+          <span class="text-xl font-bold text-slate-900">${{ product.price }}</span>
+          <span class="text-xs font-medium text-indigo-600 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+            View Details &rarr;
+          </span>
+        </div>
+      </div>
+
+    </div>
+    {% endif %}
+  {% empty %}
+    <div class="col-span-full py-12 text-center">
+      <p class="text-slate-500 text-lg">No active products available at the moment.</p>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
