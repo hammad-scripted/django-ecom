@@ -135,6 +135,7 @@ button { color: inherit; }
 .add-button { flex: 1; min-height: 48px; }
 .button-disabled { width: 100%; color: #929990; background: #ecefea; cursor: not-allowed; }
 .form-feedback { min-height: 17px; margin: 8px 0 0; color: var(--green); font-size: 10px; }
+.form-feedback a { color: var(--green-deep); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
 .detail-footnote { margin: 14px 0 0; color: #929890; font: italic 12px/1.55 var(--serif); }
 
 .cart-page { padding-top: 11px; }

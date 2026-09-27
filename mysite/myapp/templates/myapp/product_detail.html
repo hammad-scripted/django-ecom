@@ -22,6 +22,7 @@
         <form id="add-to-cart-form" class="add-form" method="post" action="{% url 'cart_add' %}">
           {% csrf_token %}
           <input type="hidden" name="product_id" value="{{ product.pk }}" />
+          <input type="hidden" name="next" value="{{ request.path }}" />
           <label for="quantity">Quantity</label>
           <div class="purchase-row">
             <div class="quantity-control"><button type="button" data-quantity-step="-1" aria-label="Decrease quantity">−</button><input id="quantity" name="product_quantity" type="number" min="1" max="{{ product.stock }}" value="1" inputmode="numeric" /><button type="button" data-quantity-step="1" aria-label="Increase quantity">+</button></div>
@@ -66,6 +67,13 @@
             headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
           });
           const result = await response.json();
+          if (response.status === 401 && result.login_url) {
+            const signInLink = document.createElement('a');
+            signInLink.href = result.login_url;
+            signInLink.textContent = 'Sign in';
+            feedback.replaceChildren(document.createTextNode(result.message + ' '), signInLink);
+            return;
+          }
           if (!response.ok) throw new Error(result.message || 'We couldn’t add this item. Please try again.');
           document.querySelector('#cart-count').textContent = result.quantity;
           feedback.textContent = 'Added to your bag. Lovely choice!';
@@ -76,6 +84,7 @@
           button.innerHTML = 'Try again <span aria-hidden="true">→</span>';
         } finally {
           button.disabled = false;
+          if (button.textContent === 'Adding…') button.innerHTML = 'Add to bag <span aria-hidden="true">→</span>';
         }
       });
     })();
