@@ -1,0 +1,45 @@
+{% extends "myapp/base.html" %}
+{% block title %}Your bag — ShopHub{% endblock %}
+
+{% block body %}
+  <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{% url 'product_list' %}">Shop</a><span aria-hidden="true">/</span><span>Your bag</span></nav>
+  <section class="cart-page">
+    <div class="cart-heading"><div><span class="eyebrow">THE GOOD THINGS YOU FOUND</span><h1>Your bag<span class="cart-heading-count">({{ cart|length }})</span></h1></div><a class="text-link" href="{% url 'product_list' %}">Keep browsing <span aria-hidden="true">→</span></a></div>
+
+    {% if cart|length %}
+      <div class="cart-layout">
+        <div class="cart-items">
+          {% for item in cart %}
+            <article class="cart-item {% if not item.available %}cart-item-unavailable{% endif %}">
+              <a class="cart-item-image" href="{% url 'product_detail' item.product.slug %}">
+                {% if item.product.image %}<img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" loading="lazy" />{% else %}<div class="image-placeholder">ShopHub</div>{% endif %}
+              </a>
+              <div class="cart-item-main">
+                <div class="cart-item-top"><div><h2><a href="{% url 'product_detail' item.product.slug %}">{{ item.product.name }}</a></h2><p class="cart-unit-price">${{ item.price|floatformat:2 }} each</p></div><strong class="cart-line-price">${{ item.total_price|floatformat:2 }}</strong></div>
+                {% if not item.available %}<p class="cart-stock-warning">{% if not item.product.active %}This item is no longer available.{% elif item.product.stock == 0 %}This item is sold out.{% else %}Only {{ item.product.stock }} left in stock. Update the quantity or remove this item.{% endif %}</p>{% endif %}
+                <div class="cart-item-bottom">
+                  {% if item.product.active and item.product.stock > 0 %}
+                    <form class="cart-quantity-form" action="{% url 'cart_update' %}" method="post">{% csrf_token %}<input type="hidden" name="product_id" value="{{ item.product.pk }}" /><label class="visually-hidden" for="quantity-{{ item.product.pk }}">Quantity for {{ item.product.name }}</label><input id="quantity-{{ item.product.pk }}" name="quantity" type="number" min="1" max="{{ item.product.stock }}" value="{{ item.quantity }}" /><button type="submit" class="update-link">Update</button></form>
+                  {% else %}<span class="cart-qty-label">Qty {{ item.quantity }}</span>{% endif %}
+                  <form action="{% url 'cart_remove' %}" method="post">{% csrf_token %}<input type="hidden" name="product_id" value="{{ item.product.pk }}" /><button type="submit" class="remove-link">Remove</button></form>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+        <aside class="order-summary">
+          <span class="eyebrow">A LITTLE SUMMARY</span>
+          <h2>Order summary</h2>
+          <div class="summary-line"><span>Subtotal</span><strong>${{ cart.get_total_price|floatformat:2 }}</strong></div>
+          <div class="summary-line"><span>Shipping</span><span class="shipping-note">Calculated at checkout</span></div>
+          <p class="shipping-promo">Free shipping on orders over $75.</p>
+          <div class="summary-total"><span>Estimated total</span><strong>${{ cart.get_total_price|floatformat:2 }}</strong></div>
+          <button class="button button-dark checkout-button" type="button" disabled>Checkout coming soon</button>
+          <p class="checkout-note">Your bag is saved while you browse.</p>
+        </aside>
+      </div>
+    {% else %}
+      <div class="empty-cart"><div class="empty-bag-icon" aria-hidden="true">♡</div><span class="eyebrow">NOTHING IN HERE (YET)</span><h2>Your bag is waiting for something good.</h2><p>Take a look around and find a new everyday favorite.</p><a class="button button-dark" href="{% url 'product_list' %}">Explore the collection <span aria-hidden="true">→</span></a></div>
+    {% endif %}
+  </section>
+{% endblock %}

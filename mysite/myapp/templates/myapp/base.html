@@ -1,87 +1,56 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-Commerce Store</title>
-    <!-- Tailwind CSS v4 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script
-      src="https://code.jquery.com/jquery-4.0.0.js"
-      integrity="sha256-9fsHeVnKBvqh3FB2HYu7g2xseAZ5MlN6Kz/qnkASV8U="
-      crossorigin="anonymous"
-    ></script>
+    <meta name="theme-color" content="#f7f8f5" />
+    <title>{% block title %}ShopHub — thoughtfully chosen essentials{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'myapp/store.css' %}" />
   </head>
-  <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
-    <!-- Navigation Header -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
-      <div
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
-      >
-        <a
-          href="{% url 'product_list' %}"
-          class="text-2xl font-bold tracking-tight text-indigo-600"
-        >
-          Shop<span class="text-slate-900">Hub</span>
+  <body>
+    <div class="announcement">A little something for your everyday <span>✦</span> Free shipping on orders over $75</div>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="{% url 'product_list' %}" aria-label="ShopHub home">
+          <span class="brand-mark" aria-hidden="true">s</span>
+          <span>shop<span class="brand-light">hub</span></span>
         </a>
-        <nav class="flex items-center space-x-6">
-          <a
-            href="{% url 'product_list' %}"
-            class="text-sm font-medium text-slate-700 hover:text-indigo-600"
-            >Products</a
-          >
-          <a
-            href="#"
-            class="relative text-slate-700 hover:text-indigo-600"
-            id="cart"
-          >
-            <span
-              class="absolute top-0 right-0 inline-flex items-center justify-center h-5 w-5 text-xs font-semibold bg-indigo-600 text-white rounded-full"
-              >{% if cart %}{{ cart|length }}{% else %}0{% endif %}</span
-            >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-              />
-            </svg>
-          </a>
-          <a href="#" class="relative text-slate-700 hover:text-indigo-600">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-              />
-            </svg>
+        <form class="nav-search" method="get" action="{% url 'product_list' %}" role="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+          <label class="visually-hidden" for="nav-search-input">Search products</label>
+          <input id="nav-search-input" type="search" name="q" value="{{ query|default:'' }}" placeholder="Search for something lovely..." />
+          <button type="submit">Search</button>
+        </form>
+        <nav class="header-actions" aria-label="Main navigation">
+          <a class="nav-link" href="{% url 'product_list' %}">Shop</a>
+          <a class="cart-link" href="{% url 'cart_detail' %}" aria-label="Shopping bag, {{ cart|length }} items">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l1 13H4L5 8Z"></path><path d="M9 9V6a3 3 0 0 1 6 0v3"></path></svg>
+            <span>Bag</span><span id="cart-count" class="cart-count">{{ cart|length }}</span>
           </a>
         </nav>
       </div>
     </header>
 
-    <!-- Main Body Content -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {% block body %} {% endblock %}
+    <main class="page-shell">
+      {% if messages %}
+        <div class="messages" aria-live="polite">
+          {% for message in messages %}<p class="message {{ message.tags }}">{{ message }}</p>{% endfor %}
+        </div>
+      {% endif %}
+      {% block body %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
-      <div class="max-w-7xl mx-auto px-4 text-center text-sm text-slate-500">
-        &copy; {% now "Y" %} ShopHub. All rights reserved.
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <a class="brand footer-brand" href="{% url 'product_list' %}"><span class="brand-mark" aria-hidden="true">s</span><span>shop<span class="brand-light">hub</span></span></a>
+        <p>Good things for everyday living.</p>
+        <span>© {% now "Y" %} ShopHub</span>
       </div>
     </footer>
+    {% block scripts %}{% endblock %}
   </body>
 </html>
