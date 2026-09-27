@@ -1,0 +1,54 @@
+[
+  {
+    "model": "myapp.product",
+    "pk": 4,
+    "fields": {
+      "name": "Mechanincal Keyboard",
+      "price": "120.00",
+      "description": "rbg keyboard",
+      "image": "images/keyboard_J7ebMcM.jpg",
+      "slug": "mechanincal-keyboard",
+      "stock": 5,
+      "active": true
+    }
+  },
+  {
+    "model": "myapp.product",
+    "pk": 5,
+    "fields": {
+      "name": "Mechanincal Keyboard",
+      "price": "79.00",
+      "description": "this is a keyboard",
+      "image": "images/keyboard_eUgQaD7.jpg",
+      "slug": "mechanincal-keyboard-1",
+      "stock": 4,
+      "active": true
+    }
+  },
+  {
+    "model": "myapp.product",
+    "pk": 6,
+    "fields": {
+      "name": "Mouse",
+      "price": "50.00",
+      "description": "Computer mouse",
+      "image": "images/pexels-helenalopes-7151696.jpg",
+      "slug": "mouse",
+      "stock": 2,
+      "active": true
+    }
+  },
+  {
+    "model": "myapp.product",
+    "pk": 7,
+    "fields": {
+      "name": "Monitor",
+      "price": "200.00",
+      "description": "Computer monitor",
+      "image": "images/pexels-tunde-tnt-32884031-7491599.jpg",
+      "slug": "monitor",
+      "stock": 7,
+      "active": true
+    }
+  }
+]
