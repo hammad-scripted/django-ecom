@@ -128,6 +128,16 @@
         product_id: $('#atc').val(),
         product_quantity: $('#quantity option:selected').text(),
       },
+      success: function (response) {
+        console.log(response);
+        if (response.status == 'success') {
+          alert('Product added to cart');
+          
+        }
+      },
+      error: function (xhr, status, error) {
+        console.log(error);
+      },
     });
   });
 </script>
