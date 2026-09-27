@@ -1,0 +1,32 @@
+{% extends "myapp/base.html" %}
+{% block title %}Create your account — ShopHub{% endblock %}
+
+{% block body %}
+  <section class="auth-layout">
+    <div class="auth-story">
+      <span class="eyebrow"><span class="eyebrow-dot"></span> YOUR LITTLE CORNER</span>
+      <h1>Good things<br>look good <em>on you.</em></h1>
+      <p>Create an account to keep your favorite finds close and make every visit feel like yours.</p>
+      <div class="auth-story-mark" aria-hidden="true">s</div>
+    </div>
+    <div class="auth-panel">
+      <span class="eyebrow">JOIN SHOPHUB</span>
+      <h2>Create your account</h2>
+      <p class="auth-intro">A few details and you’re in.</p>
+      <form class="auth-form" method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="auth-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+        {% for field in form %}
+          <div class="form-field">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}<div class="field-help">{{ field.help_text }}</div>{% endif %}
+            {% if field.errors %}<div class="field-errors" role="alert">{{ field.errors }}</div>{% endif %}
+          </div>
+        {% endfor %}
+        <button class="button button-dark auth-submit" type="submit">Create account <span aria-hidden="true">→</span></button>
+      </form>
+      <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+    </div>
+  </section>
+{% endblock %}

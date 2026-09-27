@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp',
-    'cart'
+    'cart',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -100,6 +101,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "product_list"
+LOGOUT_REDIRECT_URL = "product_list"
 
 
 # Internationalization
